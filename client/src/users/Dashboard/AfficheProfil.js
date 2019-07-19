@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 
 export default class AfficheProfil extends Component {
 
@@ -24,10 +25,12 @@ export default class AfficheProfil extends Component {
 
     }
 
+    ajout = event => {
+        window.location = "/dashboard";
+      }
+    
     liste() {
-        return <div>
-            <div className="table-responsive">
-                <table className="table">
+        return <table className="table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -55,13 +58,19 @@ export default class AfficheProfil extends Component {
                         }
                     </tbody>
                 </table>
-            </div>
-        </div>
     }
     render() {
         return (
-            <div>
+            <div className='app1'>
                 {this.liste()}
+                      <Button
+                          onClick={this.ajout}
+                          type="submit"
+                      >
+                          Retour
+                      </Button>
+
+
             </div>
         );
     }

@@ -1,83 +1,73 @@
 import React from 'react';
+//import { BrowserRouter as Router } from 'react-router-dom';
+
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import API from '../../utils/API';
+import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 
-import { MDBContainer, MDBRow, MDBCol} from 'mdbreact';
-
-export default class Login extends React.Component {
+class Achat extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            _id: '',
+            nom: "",
             email: "",
+            carte: "",
             password: ""
+        
         }
         this.handleChange.bind(this);
         this.send.bind(this);
     }
-
     send = event => {
-
-        if (this.state.email.length === 0) {
-            return;
-        }
-        if (this.state.password.length === 0) {
-            return;
-        }
-        API.login(this.state.email, this.state.password).then(function (data) {
-            console.log('data ==', data);
-
-            //localStorage.setItem('token', data.data.token, 'id', data.data.id);
-            localStorage.setItem('id', data.data.id);
-            window.location = '/dashboard'
-        }, function (error) {
-            console.log(error);
-            return;
-        })
-    }
-
-    signup = event => {
-        window.location = "/signup"
     }
     handleChange = event => {
         this.setState({
             [event.target.id]: event.target.value
         });
     }
-    render() {
-        return (
-            <div className="Login">
 
+    signin = event => {
+        window.location = "/login"
+        
+    }
+    render() {
+
+        return (
+            
+            <div className="Login">
                 <MDBContainer>
                     <MDBRow>
                         <MDBCol md="6">
 
+                            <FormGroup controlId="nom" bsSize="large">
+                                <FormLabel>nom</FormLabel>
+                                <FormControl autoFocus type="text" value={this.state.nom} onChange={this.handleChange} />
+                            </FormGroup>
                             <FormGroup controlId="email" bsSize="large">
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel>email</FormLabel>
                                 <FormControl autoFocus type="email" value={this.state.email} onChange={this.handleChange} />
+                            </FormGroup>
+                            <FormGroup controlId="email" bsSize="large">
+                                <FormLabel>numéro carte</FormLabel>
+                                <FormControl autoFocus type="email" value={this.state.carte} onChange={this.handleChange} />
                             </FormGroup>
                             <FormGroup controlId="password" bsSize="large">
                                 <FormLabel>Password</FormLabel>
                                 <FormControl value={this.state.password} onChange={this.handleChange} type="password" />
                             </FormGroup>
 
-                            <Button variant="primary"
-                                onClick={this.send}
-                                type="submit">
-                                 Connexion
-                            </Button>
                             <Button
-                                onClick={this.signup}
                                 type="submit"
+                                onClick={this.send}
                             >
-                                Signup
+                                Envoyer
                             </Button>
-
 
                         </MDBCol>
                     </MDBRow>
                 </MDBContainer>
             </div>
-        )
-    }
-}
+                );
+              }
+            }
+            
+export default Achat;

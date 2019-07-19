@@ -1,7 +1,10 @@
 
 import React from 'react';
 
-import { Button } from "react-bootstrap";
+import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
+
+import { MDBContainer, MDBRow, MDBCol} from 'mdbreact';
+
 
 import API from '../../utils/API';
 class PostFrontToBack extends React.Component {
@@ -10,10 +13,10 @@ class PostFrontToBack extends React.Component {
     super(props);
 
     this.state = {
-     nom: '',
-     prix:'',
-      description:'',
-      photo_profil:'',
+      nom: '',
+      prix: '',
+      description: '',
+      photo_profil: '',
       user: ''
 
     };
@@ -26,25 +29,25 @@ class PostFrontToBack extends React.Component {
   disconnect = event => {
     API.logout();
     window.location = "/";
-}
+  }
 
-liste = event => {
-  window.location = "/userArticle";
-}
+  liste = event => {
+    window.location = "/userArticle";
+  }
 
 
   onChange(event) {
     this.setState({
-        [event.target.name]: event.target.value
+      [event.target.name]: event.target.value
     })
-}
+  }
 
 
 
-disconnect = event => {
-  API.logout();
-  window.location = "/";
-}
+  disconnect = event => {
+    API.logout();
+    window.location = "/";
+  }
 
 
   handleUploadImage(ev) {
@@ -53,50 +56,96 @@ disconnect = event => {
 
     const data = new FormData();
     data.append('photo_profil', this.uploadInput.files[0]);
-    data.append('nom',this.state.nom);
-    data.append('prix',this.state.prix);
-    data.append('description',this.state.description)
-    data.append('user',localStorage.id)
+    data.append('nom', this.state.nom);
+    data.append('prix', this.state.prix);
+    data.append('description', this.state.description)
+    data.append('user', localStorage.id)
 
-    
-    
+
+
     fetch('http://localhost:8000/article', {
       method: 'POST',
       body: data,
     }).then((response) => {
       response.json().then((body) => {
         this.setState({ photo_profil: `http://localhost:8000/article/${body.photo_profil}` });
-        console.log('ity ilay body.fil',body);
-        
+        console.log('ity ilay body.fil', body);
+
       });
     });
   }
 
   componentDidMount() {
-    console.log('this.props.location.pathname',localStorage.id);
-    
-    /* axios.get('http://localhost:8000/user/')
-        .then(response => {
-            console.log('user_tokony-misy awy doly', response)
-            this.setState({ profil: response.data });
-        })
-        .catch(function (error) {
-            console.log(error);
-        }) */
-
-    
-
-}
+    console.log('this.props.location.pathname', localStorage.id);
+  }
 
   render() {
     return (
-      <form onSubmit={this.handleUploadImage}>
+      <div className="Login">
+
+          <MDBContainer>
+              <MDBRow>
+                  <MDBCol md="6">
+
+                      <FormGroup controlId="email" bsSize="large">
+                          <FormLabel>Nom:</FormLabel>
+                          <FormControl autoFocus type="text"
+                            value={this.state.value}
+                            onChange={this.onChange}
+                            name="nom"/>
+                      </FormGroup>
+                      <FormGroup controlId="password" bsSize="large">
+                          <FormLabel>Prix:</FormLabel>
+                          <FormControl type="text"
+                            value={this.state.value}
+                            onChange={this.onChange}
+                            name="prix" />
+                      </FormGroup>
+                      <FormGroup controlId="description" bsSize="large">
+                          <FormLabel>Description:</FormLabel>
+                          <FormControl type="text"
+                            value={this.state.value}
+                            onChange={this.onChange}
+                            name="description" />
+                      </FormGroup>
+
+                      <FormGroup controlId="file" bsSize="large">
+                          <FormControl 
+                          ref={(ref) => { this.uploadInput = ref; }} 
+                          type="file"
+                           name="photo_profil" />
+                      </FormGroup>
+
+                      <Button variant="primary"
+                          onClick={this.handleUploadImage}
+                          type="submit">
+                           Ajouter
+                      </Button>
+
+                      <Button
+                          onClick={this.disconnect}
+                          type="submit"
+                      >
+                          Deconnecter
+                      </Button>
+                      <Button
+                          onClick={this.liste}
+                          type="submit"
+                      >
+                          Mes produits
+                      </Button>
+
+
+                  </MDBCol>
+              </MDBRow>
+          </MDBContainer>
+      {/* <form onSubmit={this.handleUploadImage}>
         <label>Nom:</label>
         <input type="text"
           value={this.state.value}
           onChange={this.onChange}
           name="nom" /><br></br>
-          <label>Prix:</label>
+        <label>Prix:</label>
         <input type="text"
           value={this.state.value}
           onChange={this.onChange}
@@ -105,28 +154,29 @@ disconnect = event => {
         <input type="text"
           value={this.state.value}
           onChange={this.onChange}
-          name="description" /><br></br>       
-      
-          <input ref={(ref) => { this.uploadInput = ref; }} type="file" name="photo_profil"/>
-       
-          <button>Ajouter</button>
-          <Button
-                onClick={this.disconnect}
-                block
-                bsSize="large"
-                type="submit"
-                >
-                Se déconnecter
+          name="description" /><br></br>
+
+        <input ref={(ref) => { this.uploadInput = ref; }} type="file" name="photo_profil" />
+
+        <button>Ajouter</button>
+        <Button
+          onClick={this.disconnect}
+          block
+          bsSize="large"
+          type="submit"
+        >
+          Se déconnecter
                 </Button>
-          <Button
-                onClick={this.liste}
-                block
-                bsSize="large"
-                type="submit"
-                >
-                Tous mes produits
+        <Button
+          onClick={this.liste}
+          block
+          bsSize="large"
+          type="submit"
+        >
+          Tous mes produits
                 </Button>
-      </form>
+      </form> */}
+      </div>
     );
   }
 }

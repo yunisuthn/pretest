@@ -1,6 +1,7 @@
 const User = require('../schema/schemaUser.js');
 const passwordHash = require("password-hash");
 const Article = require('../schema/article');
+const Banque = require('../schema/banque');
 
 var front = []
 const fs = require("fs");
@@ -291,6 +292,101 @@ exports.lireImage =(req, res) =>{
         console.log("erreur be miitsy", e.stack);
     }
 }
+
+
+exports.createBanque = (req, res) => {
+    if (!req.body.nom || !req.body.email) {
+        console.log('console.log 1 ' + req.file);
+
+        console.log('console.log 2 ' + req.body.nom);
+
+
+        return res.status(400).send({
+            message: "profil content can not be empty"
+
+        });
+    }
+
+    Banque.find()
+        .then(user => {
+            //autoincrement
+            let idautom;
+            if (user.length == 0) {
+                idautom = 0
+            } else {
+                idautom = parseInt(user[user.length - 1]._id) + 1
+            }
+
+            const profil = new Banque({
+
+                _id: idautom,
+                nom: req.body.nom,
+                email: req.body.email,
+                num: req.body.num,
+                argent: req.body.argent,
+                password: passwordHash.generate(req.body.password)
+            });
+
+            profil.save()
+                .then(() => {
+                    Banque.find()
+                        .then(data => {
+                            res.send(data);
+                        })
+                }).catch(err => {
+                    res.status(200).send({
+                        message: err.message || "Something wrong while creating the banque."
+
+                    });
+                });
+        })
+};
+
+
+exports.findBanque = (req, res) => {
+    Banque.find()
+        .then(notes => {
+            res.send(notes);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || 'some error'
+            });
+        });
+};
+exports.achat = (req, res) => {
+    if (!req.body.num && !req.body.password) {
+        //Le cas où l'email ou bien le password ne serait pas soumit ou nul
+        res.status(400).json({
+            "text": "Requête invalide"
+        })
+    } else {
+        Banque.findOne({
+            num: req.body.num
+        }, function (err, user) {
+            for (let i = 0; i < user.length; i++) {
+                var rest = user.argent.Decimal128 >=req.body.achat
+                if ((user.num == req.body.num) && (user.argent.Decimal128 >=req.body.achat)) {
+                    
+                    res.status(200).json({
+                        "text": "Achat réussi",
+                        'id' : user._id,
+                        'rest' : rest
+                    })
+                    console.log('rest == ', rest);
+                }else{
+
+                    res.status(401).json({
+                        "text": "Achat echec"
+                    })
+                    console.log('Achat echec');
+                }
+                
+            }
+            
+        })
+    }
+};
+
 
 /* exports.findOneArt = (req, res) => {
     let id = req.params.profilId;
