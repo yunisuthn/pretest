@@ -2,3 +2,29 @@
   font-size: 20px;
   
 }
+
+#sary{
+  height: 400px;
+  width : 300px;
+}
+
+#carte{
+  height: 500px;
+  width: 300px;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-bottom: 20%;
+}
+
+.app{
+  width: 100%;  
+  height: 100%;
+}
+
+.app1{
+  width: 50%;  
+  height: 50%;
+}
+.table{
+  margin-left: 10%;
+}

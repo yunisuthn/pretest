@@ -5,14 +5,19 @@ module.exports = function (app) {
     .post('/signup',account.signup)
     .get('/user', account.findUser)
     .get('/user/:profilId', account.findOneUser)
+
     .post('/article', account.createArt)
     .get('/article', account.findArt)
     .get('/article/:profilId', account.findOneArt)
     .put('/article/:noteId', account.update)
     .delete('/article/:noteId', account.delete)
     .get('/userArticle/:noteId', account.findUserArt)
+    .get('/photos/:photo_profil', account.lireImage)
 
-    .get('/photos/:photo_profil', account.lireImage);
+
+    .post('/banque', account.createBanque)
+    .get('/banque', account.findBanque)
+    .post('/achat', account.achat)
 }
 /* const account = require('../controllers/lib');
 const express = require('express')
